@@ -55,8 +55,9 @@ const SignUpForm: React.FC = () => {
       );
 
       if (response.data) {
-        console.log(response?.data?.id);
+        console.log(response?.data);
         localStorage.setItem("userId", JSON.stringify(response?.data?.id));
+        alert("User created successfully")
       }
       navigate("/");
     } catch (error: any) {

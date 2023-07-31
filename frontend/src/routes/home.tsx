@@ -27,12 +27,12 @@ const initialTodoData: TodoData = {
 };
 
 const API_BASE_URL = "http://localhost:3000/todos";
-const userId: number = 3;
 
 const Home = () => {
   const navigate = useNavigate();
   const [todoData, setTodoData] = useState<TodoData>(initialTodoData);
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,6 +63,8 @@ const Home = () => {
   };
 
   const fetchTodos = async () => {
+    setUserId(localStorage.getItem("userId"));
+
     try {
       const response = await axios.get(`${API_BASE_URL}/all/${userId}`);
       setTodos(response.data);
@@ -73,12 +75,21 @@ const Home = () => {
 
   const logout = () => {
     localStorage.removeItem("userToken"); // Clear the token from local storage
+    setUserId(null);
     navigate("/login"); // Redirect to the login page
   };
 
   useEffect(() => {
-    fetchTodos();
+    // Get the userId from localStorage whenever the component mounts or the user logs in
+    setUserId(localStorage.getItem("userId"));
   }, []);
+
+  useEffect(() => {
+    // Fetch todos whenever the userId changes (user logs in or logs out)
+    if (userId) {
+      fetchTodos();
+    }
+  }, [userId]);
 
   return (
     <div>
@@ -163,23 +174,5 @@ const Button = styled.button`
   color: white;
   height: 35px;
 `;
-
-// const Button = styled.button`
-//   border-radius: 12px;
-//   border: 2px solid transparent;
-//   border-color: white;
-//   padding: 0.6em 1.2em;
-//   font-size: 1em;
-//   font-weight: 500;
-//   font-family: inherit;
-//   background-color: #1a1918;
-//   border-color: white;
-//   cursor: pointer;
-//   transition: border-color 0.25s;
-//   color: white;
-//   height: 35px;
-//   margin: auto;
-//   margin-top: 10px;
-// `;
 
 export default Home;

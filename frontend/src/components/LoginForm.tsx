@@ -33,21 +33,35 @@ const LoginForm: React.FC = () => {
       return;
     }
 
-    const response = await axios.post(
-      "http://localhost:3000/auth/login",
-      JSON.stringify(loginData),
-      {
-        headers: { 'Content-Type': 'application/json'}
-      }
-    );
-    if (response.data) {
-      console.log(response?.data);
-      localStorage.setItem(
-        "userToken",
-        JSON.stringify(response?.data?.access_token)
+    try {
+      const loginResponse = await axios.post(
+        "http://localhost:3000/auth/login",
+        JSON.stringify(loginData),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
+
+      if (loginResponse.data) {
+        const token = loginResponse?.data?.access_token;
+        localStorage.setItem("userToken", JSON.stringify(token));
+
+        const profileResponse = await axios.get(
+          "http://localhost:3000/auth/profile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        localStorage.setItem(
+          "userId",
+          JSON.stringify(profileResponse?.data?.sub)
+        );
+      }
+
+      navigate("/");
+    } catch (error) {
+      alert("Login failed. Please check your credentials.");
     }
-   navigate("/");
   };
 
   return (
