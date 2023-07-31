@@ -6,12 +6,12 @@ describe('UsersController', () => {
   // describe groups multiple test cases together. tests related to the UsersController.
   let controller: UsersController;
   const mockUsersService = {
-    createUser: jest.fn(dto => {
+    createUser: jest.fn((dto) => {
       return {
         id: 1,
-        ...dto
+        ...dto,
       };
-    })
+    }),
   };
 
   beforeEach(async () => {
@@ -27,7 +27,8 @@ describe('UsersController', () => {
     controller = module.get<UsersController>(UsersController);
   });
 
-  it('should create a new user', async () => {  //test cases
+  it('should create a new user', async () => {
+    //test cases
     const newUser = {
       firstName: 'John',
       lastName: 'Doe',

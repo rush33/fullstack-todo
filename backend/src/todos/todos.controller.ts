@@ -27,16 +27,6 @@ export class TodosController {
     return this.todosService.findAll(userId);
   }
 
-  @Get('/notcompleted/:userId')
-  findAllNotCompleted(@Param('userId') userId: number) {
-    return this.todosService.findAllNotCompleted(userId);
-  }
-
-  @Get('/completed/:userId')
-  findAllCompleted(@Param('userId') userId: number) {
-    return this.todosService.findAllCompleted(userId);
-  }
-
   @Patch('/markcomplete/:id')
   complete(@Param('id') id: number) {
     return this.todosService.complete(+id);
@@ -47,3 +37,13 @@ export class TodosController {
     return this.todosService.remove(+id);
   }
 }
+
+  // @Get('/notcompleted/:userId')
+  // findAllNotCompleted(@Param('userId') userId: number) {
+  //   return this.todosService.findAllNotCompleted(userId);
+  // }
+
+  // @Get('/completed/:userId')
+  // findAllCompleted(@Param('userId') userId: number) {
+  //   return this.todosService.findAllCompleted(userId);
+  // }
